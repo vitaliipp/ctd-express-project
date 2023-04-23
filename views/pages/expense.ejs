@@ -1,0 +1,53 @@
+<%- include('../partials/head', {errors, info}); %> <%-
+include('../partials/navbar'); %>
+<div class="container justify-content-center mt-10">
+  <div class="w-50 container">
+    <div class="mt-10 mb-10">
+      <h1 style="text-align: center"><%= expense_values.title %></h1>
+    </div>
+    <div class="mb-3 border border-5">
+      <form action="<%= expense_values.action %>" method="POST">
+        <div class="mb-3 ms-3 me-3">
+          <label for="company" class="form-label">Company</label>
+          <input
+            name="company"
+            id="company"
+            type="date"
+            class="form-control"
+            value="<%= expense_values.company %>"
+          />
+        </div>
+        <div class="mb-3 ms-3 me-3">
+          <label for="position" class="form-label">Position</label>
+          <input
+            name="position"
+            id="position"
+            type="text"
+            class="form-control"
+            value="<%= expense_values.position %>"
+          />
+        </div>
+        <div class="mb-3 ms-3 me-3">
+          <select
+            name="status"
+            id="status"
+            class="form-select"
+            value="<%= expense_values.status %>"
+          >
+            <% status_values.forEach((stat_name)=>{ %>
+            <option value="<%= stat_name %>"><%= stat_name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="mb-3 ms-3 me-3">
+          <button type="submit" class="btn btn-primary">
+            <%= expense_values.submit %>
+          </button>
+          <input type="hidden" name="_csrf" value="<%= _csrf %>" />
+        </div>
+      </form>
+    </div>
+    <a href="/expenses" class="btn btn-primary mt-10">Back</a>
+  </div>
+</div>
+<%- include("../partials/foot") %>

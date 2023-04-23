@@ -1,0 +1,64 @@
+<%- include('../partials/head', {errors, info}) %> <%-
+include('../partials/navbar') %> <% if (expenses.length === 0) { %>
+<h2 style="text-align: center">There are no entries to display.</h2>
+<% } else { %>
+<table id="expenses-table" class="table">
+  <tr id="expenses-table-header">
+    <th scope="col">Company</th>
+    <th scope="col">Position</th>
+    <th scope="col">Status</th>
+    <th colspan="2" scope="col"></th>
+  </tr>
+  <% expenses.forEach((expense) => { %>
+  <tr>
+    <td><%= expense.company %></td>
+    <td><%= expense.position %></td>
+    <td><%= expense.status %></td>
+    <td>
+      <a class="btn btn-primary" href="/expenses/edit/<%= expense._id %>"
+        >edit</a
+      >
+    </td>
+    <td>
+      <button
+        type="button"
+        class="deleteButton btn btn-primary"
+        data-id="<%= expense._id %>"
+      >
+        delete
+      </button>
+    </td>
+  </tr>
+  <% }); %>
+</table>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const table = document.getElementById('expenses-table');
+    table.addEventListener('click', async (event) => {
+      if (event.target.classList.contains('deleteButton')) {
+        const expense_id = event.target.dataset.id;
+        event.preventDefault();
+        try {
+          response = await fetch(`/expenses/delete/${expense_id}`, {
+            method: 'DELETE',
+          });
+          window.location = response.url;
+        } catch {
+          const body = document.getElementById('body');
+          const alert_html =
+            '<div class="alert alert-danger" role="alert">A communications error occurred.</div>';
+          const temp_div = document.createElement('div');
+          temp_div.innerHTML = alert_html;
+          const alerts = document.getElementsByClassName('alert');
+          Array.prototype.forEach.call(alerts, (alert) => {
+            body.removeChild(alert);
+          });
+          const new_alert = document.createElement('div');
+          new_alert.innerHTML = alert_html;
+          body.prepend(temp_div.firstChild);
+        }
+      }
+    });
+  });
+</script>
+<% } %> <%- include("../partials/foot") %>
