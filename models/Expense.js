@@ -5,6 +5,7 @@ const ExpenseSchema = new mongoose.Schema(
     date: {
       type: Date,
       default: Date.now,
+      required: [true, 'Please provide date'],
     },
     category: {
       type: String,
@@ -21,6 +22,15 @@ const ExpenseSchema = new mongoose.Schema(
     amount: {
       type: Number,
       required: true,
+    },
+    payment_type: {
+      type: String,
+      enum: ['Cash', 'Credit Card', 'Debit Card', 'Other'],
+      default: 'Cash',
+    },
+    note: {
+      type: String,
+      maxlength: 100,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
