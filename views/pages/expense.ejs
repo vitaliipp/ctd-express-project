@@ -8,46 +8,48 @@ include('../partials/navbar'); %>
     <div class="mb-3 border border-5">
       <form action="<%= expense_values.action %>" method="POST">
         <div class="mb-3 ms-3 me-3">
-          <label for="company" class="form-label">Company</label>
+          <label for="date" class="form-label fs-4">Date</label>
           <input
-            name="company"
-            id="company"
+            name="date"
+            id="date"
             type="date"
             class="form-control"
-            value="<%= expense_values.company %>"
+            value="<%= expense_values.date %>"
           />
         </div>
         <div class="mb-3 ms-3 me-3">
-          <label for="position" class="form-label">Position</label>
-          <input
-            name="position"
-            id="position"
-            type="text"
-            class="form-control"
-            value="<%= expense_values.position %>"
-          />
-        </div>
-        <div class="mb-3 ms-3 me-3">
+          <label for="position" class="form-label fs-4">Category</label>
           <select
-            name="status"
-            id="status"
+            name="category"
+            id="category"
+            type="text"
             class="form-select"
-            value="<%= expense_values.status %>"
+            value="<%= expense_values.category %>"
           >
-            <% status_values.forEach((stat_name)=>{ %>
-            <option value="<%= stat_name %>"><%= stat_name %></option>
+            <% category_values.forEach((cat_name)=>{ %>
+            <option value="<%= cat_name %>"><%= cat_name %></option>
             <% }) %>
           </select>
         </div>
         <div class="mb-3 ms-3 me-3">
-          <button type="submit" class="btn btn-primary">
+          <label for="position" class="form-label fs-4">Amount</label>
+          <input
+            name="amount"
+            id="amount"
+            type="number"
+            class="form-control"
+            value="<%= expense_values.amount %>"
+          />
+        </div>
+        <div class="mb-3 ms-3 me-3">
+          <button type="submit" class="btn btn-lg btn-success">
             <%= expense_values.submit %>
           </button>
           <input type="hidden" name="_csrf" value="<%= _csrf %>" />
         </div>
       </form>
     </div>
-    <a href="/expenses" class="btn btn-primary mt-10">Back</a>
+    <a href="/expenses" class="btn btn-secondary mt-10">Back</a>
   </div>
 </div>
 <%- include("../partials/foot") %>

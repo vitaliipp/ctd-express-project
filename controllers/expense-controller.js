@@ -1,7 +1,7 @@
 const Expense = require('../models/Expense');
 const parse_v = require('../util/parse_v_error');
 
-const status_values = Expense.schema.path('status').enumValues;
+const category_values = Expense.schema.path('category').enumValues;
 
 const expenses = async (req, res) => {
   const expenselist = await Expense.find({ createdBy: req.user.id });
@@ -14,15 +14,15 @@ const expenses = async (req, res) => {
 
 const new_expense = (req, res) => {
   const expense_values = {
-    company: '',
-    position: '',
-    status: '',
+    date: '',
+    category: '',
+    amount: '',
     action: '/expenses/add',
     submit: 'Add',
     title: 'Add an Expense',
   };
   res.render('pages/expense', {
-    status_values,
+    category_values,
     expense_values,
     errors: req.flash('error'),
     info: req.flash('info'),
@@ -32,24 +32,24 @@ const new_expense = (req, res) => {
 const add_expense = async (req, res, next) => {
   try {
     await Expense.create({
-      company: req.body.company,
-      position: req.body.position,
-      status: req.body.status,
+      date: req.body.date,
+      category: req.body.category,
+      amount: req.body.amount,
       createdBy: req.user.id,
     });
   } catch (e) {
     if (e.name === 'ValidationError') {
       parse_v(e, req);
       const expense_values = {
-        company: req.body.company,
-        position: req.body.position,
-        status: req.body.status,
+        date: req.body.date,
+        category: req.body.category,
+        amount: req.body.amount,
         action: '/expenses/add',
         submit: 'Add',
         title: 'Add a Expense Entry',
       };
       return res.render('pages/expense', {
-        status_values,
+        category_values,
         expense_values,
         errors: req.flash('error'),
         info: req.flash('info'),
@@ -72,14 +72,14 @@ const edit_expense = async (req, res) => {
     return res.redirect('/expenses');
   }
   const expense_values = {};
-  expense_values.company = this_expense.company || '';
-  expense_values.position = this_expense.position || '';
-  expense_values.status = this_expense.status || '';
+  expense_values.date = this_expense.date || '';
+  expense_values.category = this_expense.category || '';
+  expense_values.amount = this_expense.amount || '';
   expense_values.action = `/expenses/update/${this_expense._id}`;
   expense_values.submit = 'Update';
   expense_values.title = 'Edit an Expense Entry';
   res.render('pages/expense', {
-    status_values,
+    category_values,
     expense_values,
     errors: req.flash('error'),
     info: req.flash('info'),
@@ -98,14 +98,14 @@ const update_expense = async (req, res, next) => {
     if (e.name === 'ValidationError') {
       parse_v(e, req);
       const expense_values = {};
-      expense_values.company = req.body.company;
-      expense_values.position = req.body.position;
-      expense_values.status = req.body.status;
+      expense_values.date = req.body.date;
+      expense_values.category = req.body.category;
+      expense_values.amount = req.body.amount;
       expense_values.action = `/expenses/update/${req.params.expense}`;
       expense_values.submit = 'Update';
       expense_values.title = 'Edit an Expense Entry';
       return res.render('pages/expense', {
-        status_values,
+        category_values,
         expense_values,
         errors: req.flash('error'),
         info: req.flash('info'),

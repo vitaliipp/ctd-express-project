@@ -16,6 +16,7 @@ const expenses_router = require('./routes/expense-routes');
 const { authMiddleware, setCurrentUser, csrf } = require('./middleware/auth');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
+const path = require('path');
 
 const url = process.env.MONGO_URI;
 const store = new MongoDBStore({
@@ -30,6 +31,7 @@ store.on('error', function (error) {
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use(cookie_parser(process.env.SESSION_SECRET));
 const session_parms = {

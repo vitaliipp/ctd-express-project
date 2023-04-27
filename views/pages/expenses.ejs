@@ -4,25 +4,25 @@ include('../partials/navbar') %> <% if (expenses.length === 0) { %>
 <% } else { %>
 <table id="expenses-table" class="table">
   <tr id="expenses-table-header">
-    <th scope="col">Company</th>
-    <th scope="col">Position</th>
-    <th scope="col">Status</th>
+    <th scope="col">Date</th>
+    <th scope="col">Category</th>
+    <th scope="col">Amount</th>
     <th colspan="2" scope="col"></th>
   </tr>
   <% expenses.forEach((expense) => { %>
   <tr>
-    <td><%= expense.company %></td>
-    <td><%= expense.position %></td>
-    <td><%= expense.status %></td>
+    <td><%= expense.date.toLocaleDateString('en-US', {timeZone: 'UTC'}) %></td>
+    <td><%= expense.category %></td>
+    <td><%= expense.amount %></td>
     <td>
-      <a class="btn btn-primary" href="/expenses/edit/<%= expense._id %>"
+      <a class="btn btn-success" href="/expenses/edit/<%= expense._id %>"
         >edit</a
       >
     </td>
     <td>
       <button
         type="button"
-        class="deleteButton btn btn-primary"
+        class="deleteButton btn btn-success"
         data-id="<%= expense._id %>"
       >
         delete

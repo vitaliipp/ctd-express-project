@@ -2,19 +2,25 @@ const mongoose = require('mongoose');
 
 const ExpenseSchema = new mongoose.Schema(
   {
-    company: {
+    date: {
       type: Date,
       default: Date.now,
     },
-    position: {
+    category: {
       type: String,
-      required: [true, 'Please provide position'],
-      maxlength: 100,
+      enum: [
+        'Food',
+        'Shopping',
+        'Housing',
+        'Transportation',
+        'Utilities',
+        'Other',
+      ],
+      default: 'Shopping',
     },
-    status: {
-      type: String,
-      enum: ['interview', 'declined', 'pending'],
-      default: 'pending',
+    amount: {
+      type: Number,
+      required: true,
     },
     createdBy: {
       type: mongoose.Types.ObjectId,
