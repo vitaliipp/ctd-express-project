@@ -2,6 +2,8 @@ const Expense = require('../models/Expense');
 const parse_v = require('../util/parse_v_error');
 
 const category_values = Expense.schema.path('category').enumValues;
+const payment_type_values = Expense.schema.path('payment_type').enumValues;
+const now = new Date();
 
 const expenses = async (req, res) => {
   const expenselist = await Expense.find({ createdBy: req.user.id });
@@ -14,15 +16,18 @@ const expenses = async (req, res) => {
 
 const new_expense = (req, res) => {
   const expense_values = {
-    date: '',
+    date: now.toISOString().slice(0, 10),
     category: '',
     amount: '',
+    payment_type: '',
+    note: '',
     action: '/expenses/add',
     submit: 'Add',
     title: 'Add an Expense',
   };
   res.render('pages/expense', {
     category_values,
+    payment_type_values,
     expense_values,
     errors: req.flash('error'),
     info: req.flash('info'),
@@ -35,6 +40,8 @@ const add_expense = async (req, res, next) => {
       date: req.body.date,
       category: req.body.category,
       amount: req.body.amount,
+      payment_type: req.body.payment_type,
+      note: req.body.note,
       createdBy: req.user.id,
     });
   } catch (e) {
@@ -44,12 +51,15 @@ const add_expense = async (req, res, next) => {
         date: req.body.date,
         category: req.body.category,
         amount: req.body.amount,
+        payment_type: req.body.payment_type,
+        note: req.body.note,
         action: '/expenses/add',
         submit: 'Add',
         title: 'Add a Expense Entry',
       };
       return res.render('pages/expense', {
         category_values,
+        payment_type_values,
         expense_values,
         errors: req.flash('error'),
         info: req.flash('info'),
@@ -72,14 +82,17 @@ const edit_expense = async (req, res) => {
     return res.redirect('/expenses');
   }
   const expense_values = {};
-  expense_values.date = this_expense.date || '';
+  expense_values.date = this_expense.date.toISOString().slice(0, 10) || '';
   expense_values.category = this_expense.category || '';
   expense_values.amount = this_expense.amount || '';
+  expense_values.payment_type = this_expense.payment_type || '';
+  expense_values.note = this_expense.note || '';
   expense_values.action = `/expenses/update/${this_expense._id}`;
   expense_values.submit = 'Update';
   expense_values.title = 'Edit an Expense Entry';
   res.render('pages/expense', {
     category_values,
+    payment_type_values,
     expense_values,
     errors: req.flash('error'),
     info: req.flash('info'),
@@ -101,11 +114,14 @@ const update_expense = async (req, res, next) => {
       expense_values.date = req.body.date;
       expense_values.category = req.body.category;
       expense_values.amount = req.body.amount;
+      expense_values.payment_type = req.body.payment_type;
+      expense_values.note = req.body.note;
       expense_values.action = `/expenses/update/${req.params.expense}`;
       expense_values.submit = 'Update';
       expense_values.title = 'Edit an Expense Entry';
       return res.render('pages/expense', {
         category_values,
+        payment_type_values,
         expense_values,
         errors: req.flash('error'),
         info: req.flash('info'),

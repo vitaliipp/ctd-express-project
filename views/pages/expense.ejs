@@ -3,12 +3,12 @@ include('../partials/navbar'); %>
 <div class="container justify-content-center mt-10">
   <div class="w-50 container">
     <div class="mt-10 mb-10">
-      <h1 style="text-align: center"><%= expense_values.title %></h1>
+      <h2 style="text-align: center"><%= expense_values.title %></h2>
     </div>
     <div class="mb-3 border border-5">
       <form action="<%= expense_values.action %>" method="POST">
         <div class="mb-3 ms-3 me-3">
-          <label for="date" class="form-label fs-4">Date</label>
+          <label for="date" class="form-label fs-5">Date</label>
           <input
             name="date"
             id="date"
@@ -18,7 +18,7 @@ include('../partials/navbar'); %>
           />
         </div>
         <div class="mb-3 ms-3 me-3">
-          <label for="position" class="form-label fs-4">Category</label>
+          <label for="position" class="form-label fs-5">Category</label>
           <select
             name="category"
             id="category"
@@ -32,13 +32,37 @@ include('../partials/navbar'); %>
           </select>
         </div>
         <div class="mb-3 ms-3 me-3">
-          <label for="position" class="form-label fs-4">Amount</label>
+          <label for="position" class="form-label fs-5">Amount</label>
           <input
             name="amount"
             id="amount"
             type="number"
             class="form-control"
             value="<%= expense_values.amount %>"
+          />
+        </div>
+        <div class="mb-3 ms-3 me-3">
+          <label for="payment_type" class="form-label fs-5">Payment type</label>
+          <select
+            name="payment_type"
+            id="payment_type"
+            type="text"
+            class="form-select"
+            value="<%= expense_values.payment_type %>"
+          >
+            <% payment_type_values.forEach((type_name)=>{ %>
+            <option value="<%= type_name %>"><%= type_name %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="mb-3 ms-3 me-3">
+          <label for="note" class="form-label fs-5">Note</label>
+          <input
+            name="note"
+            id="note"
+            type="text"
+            class="form-control"
+            value="<%= expense_values.note %>"
           />
         </div>
         <div class="mb-3 ms-3 me-3">
