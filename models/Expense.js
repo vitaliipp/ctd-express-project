@@ -18,10 +18,11 @@ const ExpenseSchema = new mongoose.Schema(
         'Other',
       ],
       default: 'Shopping',
+      required: [true, 'Please provide category'],
     },
     amount: {
       type: Number,
-      required: true,
+      required: [true, 'Please provide an amount'],
     },
     payment_type: {
       type: String,
